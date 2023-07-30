@@ -1,0 +1,1043 @@
+openapi: 3.0.0
+info:
+  title: Booking Lite Problem
+  description: >
+
+    <h3> User Table Schema </h3> 
+    <table>
+      <thead>
+        <th>Column Name</th>
+        <th>Column Type</th>
+        <th>Constraints</th>
+      </thead>
+      <tbody>
+      <tr>
+        <td>id</td>
+        <td>Integer</td>
+        <td>Primary Key, Auto Increment</td>
+      </tr>
+      <tr>
+        <td>email</td>
+        <td>String</td>
+        <td>Not Null, Unique</td>
+      </tr>
+      <tr>
+        <td>password</td>
+        <td>String</td>
+        <td>Not Null</td>
+      </tr>      
+      <tr>
+        <td>username</td>
+        <td>String</td>
+        <td>Not Null</td>
+      </tr>
+      <tr>
+        <td>accessToken</td>
+        <td>String</td>
+        <td>Not Null, Unique</td>
+      </tr>
+      <tr>
+        <td>urole</td>
+        <td>String</td>
+        <td>Not Null</td>
+      </tr>
+      <tr>
+        <td>active</td>
+        <td>Boolean</td>
+      </tr>
+    </tbody>
+    </table>
+
+    <h3> Theatre Table Schema </h3> 
+    <table>
+      <thead>
+        <th>Column Name</th>
+        <th>Column Type</th>
+        <th>Constraints</th>
+      </thead>
+      <tbody>
+      <tr>
+        <td>id</td>
+        <td>Integer</td>
+        <td>Primary Key, Auto Increment</td>
+      </tr>
+      <tr>
+        <td>name</td>
+        <td>String</td>
+        <td>Not Null</td>
+      </tr>
+      <tr>
+        <td>place</td>
+        <td>String</td>
+        <td>Not Null</td>
+      </tr>      
+      <tr>
+        <td>capacity</td>
+        <td>String</td>
+        <td>Not Null</td>
+      </tr>
+      <tr>
+        <td>location</td>
+        <td>String</td>
+        <td>Not Null</td>
+      </tr>
+    </tbody>
+    </table>
+
+
+    <h3> Show Table Schema </h3> 
+    <table>
+      <thead>
+        <th>Column Name</th>
+        <th>Column Type</th>
+        <th>Constraints</th>
+      </thead>
+      <tbody>
+      <tr>
+        <td>id</td>
+        <td>Integer</td>
+        <td>Primary Key, Auto Increment</td>
+      </tr>
+      <tr>
+        <td>name</td>
+        <td>String</td>
+        <td>Not Null</td>
+      </tr>
+      <tr>
+        <td>img_link</td>
+        <td>String</td>
+        <td>Not Null</td>
+      </tr>      
+      <tr>
+        <td>tags</td>
+        <td>String</td>
+        <td>Not Null</td>
+      </tr>
+      <tr>
+        <td>price</td>
+        <td>Integer</td>
+        <td>Not Null</td>
+      </tr>
+      <tr>
+        <td>rating</td>
+        <td>Float</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>timing</td>
+        <td>String</td>
+        <td> Not Null </td>
+      </tr>
+      <tr>
+        <td>t_id</td>
+        <td>Integer</td>
+        <td>Not Null, Foreign Key</td>
+      </tr>
+      <tr>
+        <td>seats</td>
+        <td>Integer</td>
+        <td>Not Null</td>
+      </tr>
+    </tbody>
+    </table>
+    
+    <h3> Bookings Table Schema </h3> 
+    <table>
+      <thead>
+        <th>Column Name</th>
+        <th>Column Type</th>
+        <th>Constraints</th>
+      </thead>
+      <tbody>
+      <tr>
+        <td>b_id</td>
+        <td>Integer</td>
+        <td>Primary Key, Auto Increment</td>
+      </tr>
+      <tr>
+        <td>uname</td>
+        <td>String</td>
+        <td>Not Null, Foreign Key</td>
+      </tr>
+      <tr>
+        <td>t_name</td>
+        <td>String</td>
+        <td>Not Null</td>
+      </tr>      
+      <tr>
+        <td>s_name</td>
+        <td>String</td>
+        <td>Not Null</td>
+      </tr>
+      <tr>
+        <td>timing</td>
+        <td>String</td>
+        <td>Not Null</td>
+      </tr>
+      <tr>
+        <td>quantity</td>
+        <td>String</td>
+        <td>Not Null</td>
+      </tr>
+      <tr>
+        <td>date</td>
+        <td>String</td>
+        <td>Not Null</td>
+      </tr>
+      <tr>
+        <td>rating</td>
+        <td>String</td>
+        <td>Not Null</td>
+    </tbody>
+    </table>
+    
+    <h3> Profile Table Schema </h3> 
+    <table>
+      <thead>
+        <th>Column Name</th>
+        <th>Column Type</th>
+        <th>Constraints</th>
+      </thead>
+      <tbody>
+      <tr>
+        <td>uname</td>
+        <td>String</td>
+        <td>Primary Key, Foreign Key</td>
+      </tr>
+      <tr>
+        <td>fname</td>
+        <td>String</td>
+      </tr>
+      <tr>
+        <td>lname</td>
+        <td>String</td>
+      </tr>      
+      <tr>
+        <td>dob</td>
+        <td>String</td>
+      </tr>
+      <tr>
+        <td>phone</td>
+        <td>String</td>
+      </tr>
+    </tbody>
+    </table>
+    
+    <h3> Seats Table Schema </h3> 
+    <table>
+      <thead>
+        <th>Column Name</th>
+        <th>Column Type</th>
+        <th>Constraints</th>
+      </thead>
+      <tbody>
+      <tr>
+        <td>sl_no</td>
+        <td>Integer</td>
+        <td>Primary Key, Auto Increment</td>
+      </tr>
+      <tr>
+        <td>sid</td>
+        <td>Integer</td>
+        <td>Not Null, Foreign Key</td>
+      </tr>
+      <tr>
+        <td>sname</td>
+        <td>String</td>
+        <td>Not Null, Foreign Key</td>
+      </tr>      
+      <tr>
+        <td>total_seats</td>
+        <td>Integer</td>
+        <td>Not Null</td>
+      </tr>
+      <tr>
+        <td>available</td>
+        <td>Integer</td>
+        <td>Not Null</td>
+      </tr>
+    </tbody>
+    </table>
+
+    <h3> Error Codes </h3> 
+    <table>
+      <thead>
+        <th>Resource</th>
+        <th>Error Code</th>
+        <th>Message</th>
+      </thead>
+      <tbody>
+      <tr>
+        <td>User</td>
+        <td>BE0001</td>
+        <td>Incorrect Password.</td>
+      </tr>
+      <tr>
+        <td>User</td>
+        <td>BE1001</td>
+        <td>Email is Required.</td>
+      </tr>
+      <tr>
+        <td>User</td>
+        <td>BE1002</td>
+        <td>Password is Required.</td>
+      </tr>
+      <tr>
+        <td>User</td>
+        <td>BE1003</td>
+        <td>Invalid Email.</td>
+      </tr>
+      <tr>
+        <td>User</td>
+        <td>BE1004</td>
+        <td>Duplicate Value.</td>
+      </tr>
+      <tr>
+        <td>Theatre</td>
+        <td>BE2001</td>
+        <td> Venue Name is Required.</td>
+      </tr>
+      <tr>
+        <td>Theatre</td>
+        <td>BE2002</td>
+        <td> Capacity is Required.</td>
+      </tr>
+      <tr>
+        <td>Theatre</td>
+        <td>BE2003</td>
+        <td> Place is Required.</td>
+      </tr>
+      <tr>
+        <td>Theatre</td>
+        <td>BE2004</td>
+        <td> Location is Required.</td>
+      </tr>
+      <tr>
+        <td>Theatre</td>
+        <td>BE1004</td>
+        <td> Duplicate Value.</td>
+      </tr>
+      <tr>
+        <td>Theatre</td>
+        <td>BE2005</td>
+        <td> Name is Required.</td>
+      </tr>
+      <tr>
+        <td>Show</td>
+        <td>BE3001</td>
+        <td>Show Name is required. </td>
+      </tr>
+      <tr>
+        <td>Show</td>
+        <td>BE3002</td>
+        <td>Tags are required. </td>
+      </tr>
+      <tr>
+        <td>Show</td>
+        <td>BE3003</td>
+        <td>Price is required. </td>
+      </tr>
+      <tr>
+        <td>Show</td>
+        <td>BE3001</td>
+        <td>Start Time is required. </td>
+      </tr>
+      <tr>
+        <td>Show</td>
+        <td>BE3001</td>
+        <td>End Time is required. </td>
+      </tr>
+      <tr>
+        <td>Show</td>
+        <td>BE3001</td>
+        <td>Seats is required. </td>
+      </tr>
+      <tr>
+        <td>Show</td>
+        <td>BE1004</td>
+        <td>Duplicate Value. </td>
+      </tr>
+      <tr>
+        <td>Bookings</td>
+        <td>BE4001</td>
+        <td>Booking Date is required. </td>
+      </tr>
+      <tr>
+        <td>Bookings</td>
+        <td>BE4002</td>
+        <td>Quantity is required. </td>
+      </tr>
+      <tr>
+        <td>Profile</td>
+        <td>BE5001</td>
+        <td>First Name is required. </td>
+      </tr>
+      <tr>
+        <td>Profile</td>
+        <td>BE5002</td>
+        <td>Last Name is required. </td>
+      </tr>
+      <tr>
+        <td>Profile</td>
+        <td>BE5003</td>
+        <td>Date of Birth is required. </td>
+      </tr>
+      <tr>
+        <td>Profile</td>
+        <td>BE5004</td>
+        <td>Phone Number is required. </td>
+      </tr>
+    </tbody>
+    </table>
+
+  version: 1.0.0
+servers:
+  - url: http://127.0.0.1:5000/
+paths:
+  /api/login/{email}/{password}:
+    description: End point to login resource with credentials.
+    post:
+      description: Operation to login.
+      parameters:
+        - in: path
+          name: email
+          required: true
+          schema:
+            type: string
+            example: xyz@xyz.com
+        - in: path
+          name: password
+          required: true
+          schema:
+            type: string
+            example: password
+      responses:
+        '200':
+          description: Request Successful
+          content:
+            application/json:
+              schema:
+                title: login object
+                type: object
+                properties:
+                  username:
+                    type: string
+                    example: xyz
+                  password:
+                    type: string
+                    example: password
+                  urole:
+                    type: string
+                    example: user
+                  accessToken:
+                    type: string
+                    example: xHwacKerQuerTYXDiN
+        '500':
+          description: Internal Server Error
+        '404':
+          description: User not found
+
+
+  /api/signup/POST:
+    description: End point to create user resource
+    post:
+      description: Operation to create the user resource
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: xyz@xyz.com
+                password:
+                  type: string
+                  example: password
+      responses:
+        '201':
+          description: Successfully Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 201
+                  email:
+                    type: string
+                    example: xyz@xyz.com
+                  password:
+                    type: string
+                    example: password
+                  username:
+                    type: string
+                    example: xyz
+                  urole:
+                    type: string
+                    example: user
+        '402':
+          description: user already exist
+        '500':
+          description: Internal Server Error
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error_code:
+                    type: string
+                  error_message:
+                    type: string
+  /api/Theatre/GET:
+    description: Url to read, update and delete the Theatrre resource.
+    get:
+      description: Operation to read Theatre resource
+      responses:
+        '200':
+          description: Request Successful
+          content:
+            application/json:
+              schema:
+                title: Theatre object
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 101
+                  name:
+                    type: string
+                    example: Narendra
+                  place:
+                    type: string
+                    example: Vasant Kunj
+                  location:
+                    type: string
+                    example: Delhi
+        '500':
+          description: Internal server error
+        '404':
+          description: Theatres not found
+
+  /api/Theatre/POST/{uname}:
+    post:
+      description: Operation to update the student resource
+      parameters:
+        - in: path
+          name: uname
+          required: true
+          schema:
+            type: string
+            example: xyz
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                vname:
+                  type: string
+                  example: Narendra
+                capacity:
+                  type: integer
+                  example: 101
+                place:
+                  type: string
+                  example: Vasnt Kunj
+                location:
+                  type: string
+                  example: Delhi
+      responses:
+        '201':
+          description: Successfully Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 101
+                  name:
+                    type: string
+                    example: Narendra
+                  place:
+                    type: string
+                    example: Vasant Kunj
+                  location:
+                    type: string
+                    example: Delhi
+                  capacity:
+                    type: integer
+                    example: 100
+        '402':
+          description: Theatre found
+        '500':
+          description: Internal Server Error
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error_code:
+                    type: string
+                  error_message:
+                    type: string
+  /api/Theatre/{id}/{uname}:
+    delete:
+      description: Operation to delete the course resource
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            example: 101
+        - in: path
+          name: uname
+          required: true
+          schema:
+            type: string
+            example: xyz
+      responses:
+        '200':
+          description: Successfully Deleted
+        '500':
+          description: Internal Server Error
+        '404':
+          description: Theatre not found
+
+
+    put:
+      description: Operation to update the theatre resource
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            example: 101
+        - in: path
+          name: uname
+          required: true
+          schema:
+            type: string
+            example: xyz
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Narendra
+      responses:
+        '201':
+          description: Successfully Updated
+          content:
+            application/json:
+              schema:
+                title: Theatre object
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: Narendra
+        '404':
+          description: Theatre does not exist
+        '500':
+          description: Internal Server Error
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error_code:
+                    type: string
+                  error_message:
+                    type: string
+                    
+  /api/show/GET:
+    get:
+      summary: Returns all shows.
+      operationId: get_all_shows
+      responses:
+        '200':
+          description: A list of shows.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Show"
+  /api/show/post/{tid}/{uname}:
+    post:
+      summary: Creates a new show.
+      operationId: create_show
+      parameters:
+        - name: tid
+          in: path
+          description: The ID of the theater.
+          required: true
+          schema:
+            type: integer
+        - name: uname
+          in: path
+          description: The username of the user.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Show"
+      responses:
+        '200':
+          description: The show was created successfully.
+        '400':
+          description: The request body is invalid.
+        '401':
+          description: The user is not authorized to create a show.
+        '402':
+          description: The show already exists.
+  /api/show/put/{id}/{uname}:
+    put:
+      summary: Updates a show.
+      operationId: update_show
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the show.
+          required: true
+          schema:
+            type: integer
+        - name: uname
+          in: path
+          description: The username of the user.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Show"
+      responses:
+        '200':
+          description: The show was updated successfully.
+        '400':
+          description: The request body is invalid.
+        '401':
+          description: The user is not authorized to update a show.
+        '404':
+          description: The show does not exist.
+  /api/show/DELETE{sid}/{uname}:
+    delete:
+      summary: Deletes a show.
+      operationId: delete_show
+      parameters:
+        - name: sid
+          in: path
+          description: The ID of the show.
+          required: true
+          schema:
+            type: string
+        - name: uname
+          in: path
+          description: The username of the user.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The show was deleted successfully.
+        '401':
+          description: The user is not authorized to delete a show.
+        '404':
+          description: The show does not exist.
+  
+  /api/seats/{id}/{uname}:
+    get:
+      summary: Returns the seats for a show.
+      operationId: get_seats
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the show.
+          required: true
+          schema:
+            type: integer
+        - name: uname
+          in: path
+          description: The username of the user.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The seats for the show.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Seats"
+    post:
+      summary: Adds seats for a show.
+      operationId: add_seats
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the show.
+          required: true
+          schema:
+            type: integer
+        - name: uname
+          in: path
+          description: The username of the user.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The seats were added successfully.
+        '401':
+          description: The user is not authorized to add seats.
+        '404':
+          description: The show does not exist.
+  
+  /api/bookings/{uname}:
+    get:
+      summary: Returns the bookings of a user.
+      operationId: get_bookings
+      parameters:
+        - name: uname
+          in: path
+          description: The username of the user.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The bookings of the user.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Bookings"
+    post:
+      summary: Creates a new booking.
+      operationId: create_booking
+      parameters:
+        - name: uname
+          in: path
+          description: The username of the user.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Bookings"
+      responses:
+        '200':
+          description: The booking was created successfully.
+        '400':
+          description: The request body is invalid.
+    put:
+      summary: Updates a booking.
+      operationId: update_booking
+      parameters:
+        - name: uname
+          in: path
+          description: The username of the user.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Bookings"
+      responses:
+        '200':
+          description: The booking was updated successfully.
+        '400':
+          description: The request body is invalid.
+
+  /api/profile/{uname}:
+    get:
+      summary: Returns the profile of a user.
+      operationId: get_profile
+      parameters:
+        - name: uname
+          in: path
+          description: The username of the user.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The profile of the user.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Profile"
+    post:
+      summary: Updates the profile of a user.
+      operationId: update_profile
+      parameters:
+        - name: uname
+          in: path
+          description: The username of the user.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Profile"
+      responses:
+        '200':
+          description: The profile was updated successfully.
+        '400':
+          description: The request body is invalid.
+        '401':
+          description: The user is not authorized to update their profile.
+
+  /api/summary/GET/{uname}:
+    get:
+      summary: Returns the summary of bookings.
+      operationId: get_summary
+      parameters:
+        - name: uname
+          in: path
+          description: The username of the user.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The summary of bookings.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Summary"
+
+  /api/export/{id}/{uname}:
+    get:
+      summary: Returns a CSV report.
+      parameters:
+        - in: path
+          name: id
+          description: The ID of the report.
+          required: true
+          schema:
+            type: integer
+        - in: path
+          name: uname
+          description: The username of the user.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The CSV report.
+          content:
+            application/octet-stream:
+              schema:
+                type: "object"
+        '401':
+          description: The user is not authorized to access the report.
+        '500':
+          description: An error occurred.
+
+components:
+  schemas:
+    Show:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        tags:
+          type: string
+        price:
+          type: integer
+        timing:
+          type: string
+        rating:
+          type: integer
+        t_id:
+          type: integer
+        img_link:
+          type: string
+        seats:
+          type: integer
+
+    Seats:
+      type: object
+      properties:
+        sid:
+          type: integer
+        sname:
+          type: string
+        total_seats:
+          type: integer
+        booked:
+          type: integer
+        available:
+          type: integer
+
+    Profile:
+      type: object
+      properties:
+        uname:
+          type: string
+        fname:
+          type: string
+        lname:
+          type: string
+        dob:
+          type: string
+        phone:
+          type: string
+
+    Summary:
+      type: object
+      properties:
+        sname:
+          type: string
+        booked:
+          type: integer
+
+    Bookings:
+      type: object
+      properties:
+        b_id:
+          type: integer
+        uname:
+          type: string
+        s_name:
+          type: string
+        t_name:
+          type: string
+        timing:
+          type: string
+        date:
+          type: string
+        quantity:
+          type: integer
+        rating:
+          type: string
