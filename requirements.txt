@@ -1,0 +1,11 @@
+Flask
+Flask-SQLAlchemy
+Flask-restful
+Flask-Security-too
+Flask-Login
+Redis
+Celery
+Matplotlib
+weasyprint
+flask_cors
+weasyprint
