@@ -34,7 +34,7 @@ const store = new Vuex.Store({
         },
 
         search_theatre_state: (state, st) => {
-            state.search_theatre == st;
+            state.search_theatre = st;
         },
     }
 });
@@ -113,8 +113,8 @@ const search_home = Vue.component("search_home", {
             uname: this.$store.state.uname,
             count: 0,
             scount: 0,
-            theatre: null,
-            show: null,
+            venue: this.$store.state.search_theatre,
+            show: this.$store.state.search_show,
             Search: ""
         }
     },
@@ -170,7 +170,7 @@ const search_home = Vue.component("search_home", {
         },
 
         book: function(id){
-            url = "http://localhost:5000/api/seats/".concat(id).concat(this.uname);
+            url = "http://localhost:5000/api/seats/".concat(id).concat("/").concat(this.uname);
             fetch(url ,{
                 method: "POST",
                 headers : {
@@ -187,21 +187,12 @@ const search_home = Vue.component("search_home", {
         }
     },
 
+    created : function(){
+        this.scount = this.show.length
+        this.count = this.venue.length
+    },
+
     computed:{
-        venue_val: function(){
-         val =  this.$store.state.search_theatre;
-         if (val.length > 0)
-             this.count = val.length;
-         let c = this.$store.state.search_show;
-         if (c.length > 0)
-             this.scount = c.length;
-         return val;
-        },
- 
-        data: function(){
-               this.show = this.$store.state.search_show;
-               this.theatre = this.$store.state.search_theatre;
-        }
     }
 })
 
@@ -270,7 +261,7 @@ const edit_show = Vue.component("edit_show", {
                 "name": this.name,
                 "img_link": this.img_link,
             };
-            url = "http://localhost:5000/api/show/put/".concat(this.sid).concat(this.uname);
+            url = "http://localhost:5000/api/show/put/".concat(this.sid).concat("/").concat(this.uname);
             fetch(url, {
                 method: "PUT",
                 headers: {
@@ -438,7 +429,7 @@ const profile = Vue.component("profile", {
                 "phone" : this.phone
             };
 
-            url = "/api/profile".concat(this.uname)
+            url = "/api/profile/".concat(this.uname)
             fetch(url , {
                 method: "POST",
                 headers:{ 
@@ -466,7 +457,7 @@ const profile = Vue.component("profile", {
         }
     },  
 
-    created(){
+    beforeMount(){
         url = "/api/profile/".concat(this.uname)
         fetch(url, {
             method : "GET",
@@ -539,7 +530,7 @@ const bookings = Vue.component("bookings", {
         return{
             uname: this.$store.state.uname,
             rating : "",
-            bookings: [{"t_name": "venue_1", "s_name" : "show_2", "timing": "10:30 - 12:30"}, {"t_name": "venue_2", "s_name" : "show_1", "timing": "12:30 - 2:45"}]
+            bookings: null
             
         }
     },
@@ -553,7 +544,7 @@ const bookings = Vue.component("bookings", {
                 "bid" : id
             };
 
-            url ="/api/bookings".concat(this.uname)
+            url ="/api/bookings/".concat(this.uname)
             fetch(url , {
                 method: "PUT",
                 headers: {
@@ -700,7 +691,7 @@ const book_ticket = Vue.component("book-ticket", {
                     "quantity" : this.quantity
                 }
 
-                url = "/api/bookings".concat(this.uname);
+                url = "/api/bookings/".concat(this.uname);
                 fetch(url , {
                     method: "POST",
                     headers: {
@@ -747,7 +738,7 @@ const book_ticket = Vue.component("book-ticket", {
             this.price = this.sid[0].price;
             this.total = this.price * this.quantity;
 
-            url = "/api/seats/".concat(this.sid[0].id).concat(this.uname);
+            url = "/api/seats/".concat(this.sid[0].id).concat("/").concat(this.uname);
             fetch(url, {
                 method : "GET",
                 headers : {
@@ -858,7 +849,7 @@ const add_show = Vue.component("show", {
                 "vid": this.vid,
                 "seats": this.seats
             };
-            url = "http://localhost:5000/api/show/post/".concat(this.vid).concat(this.uname);
+            url = "http://localhost:5000/api/show/post/".concat(this.vid).concat("/").concat(this.uname);
             fetch(url, {
                 method: "POST",
                 headers: {
@@ -967,7 +958,7 @@ const add_venue = Vue.component("venue", {
                 "location": this.location,
                 "capacity": this.capacity
             };
-            url = "http://localhost:5000/api/Theatre/POST".concat(this.uname)
+            url = "http://localhost:5000/api/Theatre/POST/".concat(this.uname)
             fetch(url, {
                 method: "POST",
                 headers: {
@@ -1094,31 +1085,38 @@ const home = Vue.component("home", {
         Search1: function(){
             len = this.scount;
             len1 = this.count;
-            for(let i=0; i<len; i++){
-                if (i<len1 && this.Search === this.venue[i].location){
+
+            for (var i=0; i<len1; i++){
+                if ((this.Search === this.venue[i].location)){
                     show = this.show;
                     theatre = this.venue.filter((n) => n.location === this.Search);
-                    this.$store.commit('search_show_state', show);
-                    this.$store.commit('search_theatre_state', theatre);
+                    console.log(theatre);
+                    this.$store.commit("search_show_state", show);
+                    this.$store.commit("search_theatre_state", theatre);
+                    console.log(this.$store.search_theatre);
+                    console.log(this.$store.search_show);
 
                     return router.push(`/home/search/${this.uname}`);
                 }
+            }
 
-                else if (Number.isInteger(Number(this.Search))){
+            for (var i=0; i<len; i++) {
+
+                if (Number.isInteger(Number(this.Search))){
                     theatre = this.venue;
                     show = this.show.filter((n) => n.rating >= this.Search);
                     this.$store.commit('search_show_state', show);
                     this.$store.commit('search_theatre_state', theatre);
-
+                    
                     return router.push(`/home/search/${this.uname}`);
                 }
 
-                else if (this.show[i].tags.search(this.Search)){
-                    theatre = this.show;
+                else if ((this.show[i].tags.search(this.Search)) != -1) {
+                    theatre = this.venue;
                     show = this.show.filter((n) => n.tags.search(this.Search));
                     this.$store.commit('search_show_state', show);
                     this.$store.commit('search_theatre_state', theatre);
-
+                    
                     return router.push(`/home/search/${this.uname}`);
                 }
             }
@@ -1129,7 +1127,7 @@ const home = Vue.component("home", {
         },
 
         book: function(id){
-            url = "http://localhost:5000/api/seats/".concat(id).concat(this.uname);
+            url = "http://localhost:5000/api/seats/".concat(id).concat("/").concat(this.uname);
             fetch(url ,{
                 method: "POST",
                 headers : {
@@ -1276,7 +1274,7 @@ const dashboard = Vue.component("dashboard", {
         delete_venue: function(id){
             let text = "Press a button!\nEither Delete or Cancel.";
             if (confirm(text) == true) {
-                url = "http://localhost:5000/api/Theatre/".concat(id).concat(this.uname)
+                url = "http://localhost:5000/api/Theatre/".concat(id).concat("/").concat(this.uname)
                 fetch(url, {
                     method: "DELETE",
                     headers: {
@@ -1308,7 +1306,7 @@ const dashboard = Vue.component("dashboard", {
                 if (text === "" || text === null)
                     return javascript.void(0);
                 data_changed = { "name" : text };
-                url = "http://localhost:5000/api/Theatre/".concat(id).concat(this.uname);
+                url = "http://localhost:5000/api/Theatre/".concat(id).concat("/").concat(this.uname);
                 fetch(url, {
                     method: "PUT",
                     headers: {
@@ -1336,7 +1334,7 @@ const dashboard = Vue.component("dashboard", {
         delete_show: function(id){
             let text = "Press a button!\nEither Delete or Cancel.";
             if (confirm(text) == true) {
-                url = "http://localhost:5000/api/show/DELETE/".concat(id).concat(this.uname)
+                url = "http://localhost:5000/api/show/DELETE/".concat(id).concat("/").concat(this.uname)
                 fetch(url, {
                     method: 'DELETE',
                     headers: {
@@ -1348,7 +1346,7 @@ const dashboard = Vue.component("dashboard", {
             else {
                 text = "You canceled!";
             }
-            return router.go();
+            return router.replace(`/root/${this.uname}`);
         },
 
         edit_show: function(id){
@@ -1357,7 +1355,7 @@ const dashboard = Vue.component("dashboard", {
         },
 
         btn_summary: function(){
-            url = "/api/summary/GET".concat(this.uname)
+            url = "/api/summary/GET/".concat(this.uname)
             fetch(url, {
                 method: "GET",
                 headers: {
@@ -1392,7 +1390,7 @@ const dashboard = Vue.component("dashboard", {
               const d = await res.blob()  
               var a = document.createElement("a");
               a.href = window.URL.createObjectURL(d);
-              a.download = `abhineetraman_details.csv`;
+              a.download = `theatre_details.csv`;
               a.click();
               //this.$router.push({ path: '/dashboard' })
               alert("Dasboard Exported")

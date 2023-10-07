@@ -6,8 +6,8 @@ from email import encoders
 
 SMTP_SERVER_HOST = "localhost"
 SMTP_SERVER_PORT = 1025
-SENDER_ADDRESS = "21f1005523@ds.study.iitm.ac.in"
-SENDER_PASSWORD = ""
+SENDER_ADDRESS = "21f1005523@study.iitm.ac.in"
+SENDER_PASSWORD = "fk/5asB{VtG_"
 
 def sendMail(reciever, subject, message):
     msg=MIMEMultipart()

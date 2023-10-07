@@ -38,7 +38,7 @@ class Show(db.Model):
 class Bookings(db.Model):
     __tablename__ = "Bookings"
     b_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    uname = db.Column(db.String, db.ForeignKey("User.username"))
+    uname = db.Column(db.String, db.ForeignKey("user.username"))
     t_name = db.Column(db.String, db.ForeignKey("Theatre.name"), nullable=False)
     s_name = db.Column(db.String, db.ForeignKey("Show.name"))
     timing = db.Column(db.String, nullable=False)
@@ -59,7 +59,7 @@ class Seats(db.Model):
 
 class Profile(db.Model):
     __tablename__ = "Profile"
-    uname = db.Column(db.String, db.ForeignKey("User.username"), primary_key=True)
+    uname = db.Column(db.String, db.ForeignKey("user.username"), primary_key=True)
     fname = db.Column(db.String)
     lname = db.Column(db.String)
     dob = db.Column(db.String)

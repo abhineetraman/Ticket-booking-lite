@@ -48,6 +48,9 @@ celery.Task = workers.ContextTask
 app.app_context().push()
 use("Agg")
 
+#with app.app_context():
+    #db.create_all()
+
 
 
 output_fields = {
@@ -108,7 +111,7 @@ class SignupAPI(Resource):
             if i == '@':
                 break
         
-        temp_user = User(email=email, password = password, username=uname, urole="user")
+        temp_user = User(email=email, password = password, username=uname, accessToken="a", urole="user")
         db.session.add(temp_user)
         db.session.commit()
 
@@ -279,7 +282,7 @@ class ShowAPI(Resource):
 
         show = db.session.query(Show).filter(Show.t_id == vid).first()
         if show:
-            if show[1] == sname:
+            if show.name == sname:
                 raise BusinessValidationError(status_code=402, error_code="BE1004", error_message="Duplicate Value")
         
         timing = str(stime) + " - " + str(etime)
@@ -360,12 +363,13 @@ class BookingsAPI(Resource):
         user = db.session.query(User).filter(User.username == uname).filter(User.urole == "user").first()
         if user is None:
             raise AuthorisationError(status_code=500, error_message="You are not Authorised")
-        data = db.session.query(Bookings).filter(uname == uname).all()
+        data = db.session.query(Bookings).filter(Bookings.uname == uname).all()
+        print(data)
         return data, 200
     
     @jwt_required()
     def post(self, uname):
-        user = db.session.query(User).filter(User.username == uname).filter(User.roles == "user").first()
+        user = db.session.query(User).filter(User.username == uname).filter(User.urole == "user").first()
         if user is None:
             raise AuthorisationError(status_code=500, error_message="You are not Authorised")
         args = create_booking_parser.parse_args()
@@ -407,7 +411,7 @@ class BookingsAPI(Resource):
     
     @jwt_required()
     def put(self,uname):
-        user = db.session.query(User).filter(User.username == uname).filter(User.roles == "user").first()
+        user = db.session.query(User).filter(User.username == uname).filter(User.urole == "user").first()
         if user is None:
             raise AuthorisationError(status_code=500, error_message="You are not Authorised")
         args = update_booking_parser.parse_args()
@@ -544,7 +548,7 @@ class SeatsAPI(Resource):
     @jwt_required()
     @marshal_with(seat_output)
     def get(self, id, uname):
-        user = db.session.query(User).filter(User.username == uname).filter(User.roles == "user").first()
+        user = db.session.query(User).filter(User.username == uname).filter(User.urole == "user").first()
         if user is None:
             raise AuthorisationError(status_code=500, error_message="You are not Authorised")
         seat = db.session.query(Seats).filter(Seats.sid == id).first()
@@ -579,7 +583,7 @@ class CSVReportAPI(Resource):
             raise AuthorisationError(status_code=500, error_message="You are not Authorised")
         message = celery_task.send_task(id) #.apply_async()
         #result = message.wait()
-        return send_from_directory("static",f'abhineetraman_details.csv')
+        return send_from_directory("",f'theatre_details.csv')
 
 from applications.controllers import *
 

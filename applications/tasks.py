@@ -36,6 +36,7 @@ def data():
                 print('hi')
     print('hi')
 
+
 @celery.task
 def send_task(id):
     file = open('static/abhineetraman_details.csv', 'w')

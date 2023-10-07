@@ -14,11 +14,15 @@ def report_genrator(filename, data, uname):
         template =Template(file.read())
         return template.render(data=data, uname=uname)
 
-@celery.task
+
+@celery.task()
 def send_task(id):
-    file = open("/static/theatre_details.csv", 'w')
+    file = open("theatre_details.csv", 'w')
+    print("hi")
     shows = Show.query.filter_by(t_id = id).all()
+    print("hi")
     file.write("Show Name, Booked Tickets, Total Revenue \n")
+    print("hi")
     for s in shows:
         sname = s.name
         sid = s.id
@@ -28,19 +32,22 @@ def send_task(id):
             rev = book * s.price
             data = str(sname) + "," + str(book) + "," + str(rev) + "\n"
             file.write(data)
-        
+    file.close()
+    f = open("theatre_details.csv", 'r')
+    print(f)
+    print("hi")  
     return "CSV File Imported"
 
 @celery.on_after_finalize.connect
 def setup_perodic_tasks(sender, **kwargs):
     sender.add_periodic_task(crontab(minute=0, hour=0), seat_update_task.s(), name="seat_update_daily")
 
-    sender.add_periodic_task(crontab(minute=52, hour=22), daily_reminder.s(), name="daily_reminder_task")
+    sender.add_periodic_task(crontab(minute=40, hour=8), daily_reminder.s(), name="daily_reminder_task")
 
-    sender.add_periodic_task(crontab(minute=0, hour=16, day_of_month="1"), month_report.s(), name="month_reporting_task")
+    sender.add_periodic_task(crontab(minute=46, hour=8, day_of_month="7"), month_report.s(), name="month_reporting_task")
 
 
-@celery.task
+@celery.task()
 def daily_reminder():
     user = User.query.filter_by(urole="user").all()
     for u in user:
@@ -52,7 +59,7 @@ def daily_reminder():
     
     return "Daily Reminder Sent"
 
-@celery.task
+@celery.task()
 def month_report():
     user = User.query.filter_by(urole="user").all()
     for u in user:
@@ -60,12 +67,13 @@ def month_report():
         email = u.email
         book = Bookings.query.filter_by(uname=uname).all()
         if book is not None:
-            message, attachment = report_genrator("templates/monthreport.html", book, uname)
-            sendMemer(email, subject="Monthly Engagement Report", attachment=attachment)
+            attachment = "./templates/monthreport.html"
+            message = report_genrator("templates/monthreport.html", book, uname)
+            sendMemer(email, subject="Monthly Engagement Report", attachment=attachment, message=message)
     
     return "Monthly Report Sent"
 
-@celery.task
+@celery.task()
 def seat_update_task():
     seats = Seats.query.all()
     for s in seats:
